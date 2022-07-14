@@ -4,7 +4,7 @@ from app.start import main
 
 
 def download_and_install_update_if_available():
-    o = OTAUpdater('https://github.com/datalexum/Smart-ATO-Micropython', main_dir='src/app')
+    o = OTAUpdater('https://github.com/datalexum/Smart-ATO-Micropython', main_dir='app', github_src_dir='src/app')
     o.install_update_if_available_after_boot(secrets_config.WIFI_SSID, secrets_config.WIFI_PASSWORD)
 
 
