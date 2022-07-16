@@ -1,6 +1,6 @@
 from app.libs.ota_updater import OTAUpdater
 from secrets_config import WIFI_PASSWORD, WIFI_SSID
-from machine import Pin, PWM, Signal, I2C
+from machine import Pin, PWM, Signal, I2C, reset
 from utime import sleep
 from app.libs.ssd1306 import SSD1306_I2C
 
