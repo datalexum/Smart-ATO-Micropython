@@ -35,7 +35,7 @@ def main():
     # Abstand Oben 8, Abstand links 10, Max. zwei Reihen a 15 Zeichen
     oled.text("World:", 10, 8)
     oled.show()
-    oled.text("Hello - 0.0.9"), 10, 18)
+    oled.text("Hello - {}".format(o.get_version('app')), 10, 18)
     oled.show()
 
     # Empty
@@ -71,7 +71,7 @@ def main():
     switch3 = Pin(20, Pin.IN, Pin.PULL_DOWN)
     for i in range(120):
         oled.fill(0)
-        st = str(i) + ':' + " " + str(switch1.value()) + "," + str(switch2.value()) + "," + str(switch3.value())
+        st = "{}: {},{},{}".format(i, switch1.value(), switch2.value(), switch3.value())
         oled.text(st, 10, 8)
         oled.show()
         sleep(1)
