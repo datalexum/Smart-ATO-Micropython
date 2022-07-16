@@ -1,1 +1,3 @@
-# boot.py - - runs on boot-up
+from app.start import boot
+
+boot()

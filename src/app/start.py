@@ -1,9 +1,82 @@
 from app.libs.ota_updater import OTAUpdater
 from secrets_config import WIFI_PASSWORD, WIFI_SSID
+from machine import Pin, PWM, Signal, I2C
+from utime import sleep
+from app.libs.ssd1306 import SSD1306_I2C
+
+
+def boot():
+    pass
+
 
 def main():
-    o = OTAUpdater('https://github.com/datalexum/Smart-ATO-Micropython', main_dir='app', github_src_dir='src/app')
+    o = OTAUpdater(
+        "https://github.com/datalexum/Smart-ATO-Micropython",
+        main_dir="app",
+        github_src_dir="src/app",
+    )
     OTAUpdater._using_network(WIFI_SSID, WIFI_PASSWORD)
     o.check_for_update_to_install_during_next_reboot()
-    print("In start.py - 4")
-    print("Now in version 0.0.4")
+    print("Now in version 0.0.5")
+
+    i2c = I2C(1, sda=Pin(2), scl=Pin(3), freq=40000)
+    oled = SSD1306_I2C(128, 32, i2c)
+    oled.fill(0)
+    # Abstand Oben 8, Abstand links 10, Max. zwei Reihen a 15 Zeichen
+    oled.text("World:", 10, 8)
+    oled.show()
+    oled.text("Hello", 10, 18)
+    oled.show()
+
+    buzzer = PWM(Pin(10))
+    buzzer.freq(500)
+
+    # Empty
+    for i in range(3):
+        buzzer.duty_u16(1000)
+        sleep(0.1)
+        buzzer.duty_u16(0)
+        sleep(0.1)
+
+    # Error
+    for i in range(3):
+        buzzer.duty_u16(1000)
+        sleep(0.25)
+        buzzer.duty_u16(0)
+        sleep(0.25)
+        buzzer.duty_u16(1000)
+        sleep(1)
+        buzzer.duty_u16(0)
+        sleep(1)
+
+    buzzer.duty_u16(0)
+
+    # Initialisierung von GPIO14 als Ausgang
+    device = Signal(21, Pin.OUT, invert=True)
+
+    # LED einschalten
+    print("EIN")
+    device.on()
+
+    # 3 Sekunden warten
+    print(".")
+    sleep(1)
+    print(".")
+    sleep(1)
+    print(".")
+    sleep(1)
+
+    # LED ausschalten
+    print("AUS")
+    device.off()
+
+    switch1 = Pin(18, Pin.IN, Pin.PULL_DOWN)
+    switch2 = Pin(19, Pin.IN, Pin.PULL_DOWN)
+    switch3 = Pin(20, Pin.IN, Pin.PULL_DOWN)
+    for i in range(20):
+        print(
+            "SW1: {}, SW2: {}, SW3: {}".format(
+                switch1.value(), switch2.value(), switch3.value()
+            )
+        )
+        sleep(0.5)

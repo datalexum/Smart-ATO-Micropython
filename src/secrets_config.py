@@ -1,2 +1,2 @@
-WIFI_SSID='your-ssid'
-WIFI_PASSWORD='your-password'
+WIFI_SSID = "your-ssid"
+WIFI_PASSWORD = "your-password"
