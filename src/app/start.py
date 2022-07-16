@@ -16,8 +16,18 @@ def main():
         github_src_dir="src/app",
     )
     OTAUpdater._using_network(WIFI_SSID, WIFI_PASSWORD)
-    o.check_for_update_to_install_during_next_reboot()
-    print("Now in version 0.0.5")
+    update_available = o.check_for_update_to_install_during_next_reboot()
+
+    buzzer = PWM(Pin(10))
+    buzzer.freq(500)
+
+    if update_available:
+        buzzer.duty_u16(1000)
+        sleep(3)
+        buzzer.duty_u16(0)
+        reset()
+    
+    print("Now in version 0.0.6")
 
     i2c = I2C(1, sda=Pin(2), scl=Pin(3), freq=40000)
     oled = SSD1306_I2C(128, 32, i2c)
@@ -28,8 +38,7 @@ def main():
     oled.text("Hello", 10, 18)
     oled.show()
 
-    buzzer = PWM(Pin(10))
-    buzzer.freq(500)
+    
 
     # Empty
     for i in range(3):
