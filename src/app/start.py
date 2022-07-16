@@ -35,7 +35,7 @@ def main():
     # Abstand Oben 8, Abstand links 10, Max. zwei Reihen a 15 Zeichen
     oled.text("World:", 10, 8)
     oled.show()
-    oled.text("Hello", 10, 18)
+    oled.text("Hello - {}".format(o.get_version), 10, 18)
     oled.show()
 
     # Empty
