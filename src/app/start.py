@@ -26,7 +26,7 @@ def main():
         sleep(3)
         buzzer.duty_u16(0)
         reset()
-    
+
     print("Now in version 0.0.6")
 
     i2c = I2C(1, sda=Pin(2), scl=Pin(3), freq=40000)
@@ -37,8 +37,6 @@ def main():
     oled.show()
     oled.text("Hello", 10, 18)
     oled.show()
-
-    
 
     # Empty
     for i in range(3):
