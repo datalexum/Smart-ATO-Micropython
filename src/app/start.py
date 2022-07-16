@@ -35,7 +35,7 @@ def main():
     # Abstand Oben 8, Abstand links 10, Max. zwei Reihen a 15 Zeichen
     oled.text("World:", 10, 8)
     oled.show()
-    oled.text("Hello - {}".format(o.get_version), 10, 18)
+    oled.text("Hello - {}".format(o.get_version()), 10, 18)
     oled.show()
 
     # Empty
@@ -66,24 +66,19 @@ def main():
     device.on()
 
     # 3 Sekunden warten
-    print(".")
-    sleep(1)
-    print(".")
-    sleep(1)
-    print(".")
-    sleep(1)
+    switch1 = Pin(18, Pin.IN, Pin.PULL_DOWN)
+    switch2 = Pin(19, Pin.IN, Pin.PULL_DOWN)
+    switch3 = Pin(20, Pin.IN, Pin.PULL_DOWN)
+    for i in range(120):
+        oled.fill(0)
+        oled.text(
+            "{}: {},{},{}".format(i, switch1.value(), switch2.value(), switch3.value()),
+            10,
+            8,
+        )
+        oled.show()
+        sleep(1)
 
     # LED ausschalten
     print("AUS")
     device.off()
-
-    switch1 = Pin(18, Pin.IN, Pin.PULL_DOWN)
-    switch2 = Pin(19, Pin.IN, Pin.PULL_DOWN)
-    switch3 = Pin(20, Pin.IN, Pin.PULL_DOWN)
-    for i in range(20):
-        print(
-            "SW1: {}, SW2: {}, SW3: {}".format(
-                switch1.value(), switch2.value(), switch3.value()
-            )
-        )
-        sleep(0.5)
