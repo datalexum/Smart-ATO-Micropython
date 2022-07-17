@@ -46,8 +46,8 @@ class OTAUpdater:
             bool: true if a new version is available, false otherwise
         """
 
-        (current_version, latest_version) = self._check_for_new_version()
-        if latest_version > current_version:
+        (cv, lv, current_version, latest_version) = self._check_for_new_version()
+        if lv > cv:
             print("New version available, will download and install on next reboot")
             self._create_new_version_file(latest_version)
             return True
@@ -89,8 +89,8 @@ class OTAUpdater:
             bool: true if a new version is available, false otherwise
         """
 
-        (current_version, latest_version) = self._check_for_new_version()
-        if latest_version > current_version:
+        (cv, lv, current_version, latest_version) = self._check_for_new_version()
+        if lv > cv:
             print("Updating to version {}...".format(latest_version))
             self._create_new_version_file(latest_version)
             self._download_new_version(latest_version)
@@ -125,7 +125,7 @@ class OTAUpdater:
         cv = current_version.split('-')[0].split('.')
         lv = latest_version.split('-')[0].split('.')
         
-        return (int(cv[0])*10000+int(cv[1])*100+int(cv[2]), int(lv[0])*10000+int(lv[1])*100+int(lv[2]))
+        return (int(cv[0])*10000+int(cv[1])*100+int(cv[2]), int(lv[0])*10000+int(lv[1])*100+int(lv[2]), current_version, latest_version)
 
     def _create_new_version_file(self, latest_version):
         self.mkdir(self.modulepath(self.new_version_dir))
@@ -291,3 +291,4 @@ class OTAUpdater:
 
     def modulepath(self, path):
         return self.module + "/" + path if self.module else path
+
