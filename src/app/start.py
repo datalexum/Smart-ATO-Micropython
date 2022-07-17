@@ -11,18 +11,18 @@ def boot():
 
 
 def main():
-    i2c = I2C(1, sda=Pin(2), scl=Pin(3), freq=40000)
+    i2c = I2C(1, sda=Pin(16), scl=Pin(17), freq=40000)
     oled = SSD1306_I2C(128, 32, i2c)
-
-    oled.text("Welcome from", 10, 8)
-    oled.text("version {}".format(o.get_version('app')), 10, 18)
-    oled.show()
-
+    
     o = OTAUpdater(
         "https://github.com/datalexum/Smart-ATO-Micropython",
         main_dir="app",
         github_src_dir="src/app",
     )
+
+    oled.text("Welcome from", 10, 8)
+    oled.text("version {}".format(o.get_version('app')), 10, 18)
+    oled.show()
 
     oled.fill(0)
     oled.text("Checking for", 10, 8)
@@ -49,6 +49,6 @@ def main():
         oled.show()
         sleep(3)
 
-    sm = StateMachine(fs1_pin=18, fs2_pin=19, fs3_pin=20, pump_pin=21, buzzer_pin=10, lcd=oled)
+    sm = StateMachine(fs1_pin=18, fs2_pin=19, fs3_pin=23, pump_pin=21, buzzer_pin=4, lcd=oled)
     sm.start()
 

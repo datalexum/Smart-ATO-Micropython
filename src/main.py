@@ -3,7 +3,7 @@ import secrets_config
 from app.libs.ota_updater import OTAUpdater
 from app.start import main
 
-p = machine.Pin('LED', machine.Pin.OUT)
+p = machine.Pin(2, machine.Pin.OUT)
 
 def download_and_install_update_if_available():
     p.on()

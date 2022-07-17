@@ -2,7 +2,7 @@ from utime import sleep
 from app import float_switch
 from app import buzzer
 from machine import Signal, Pin, Timer
-from src.app.libs.ssd1306 import SSD1306_I2C
+from app.libs.ssd1306 import SSD1306_I2C
 import _thread
 
 class StateMachine:
@@ -17,16 +17,16 @@ class StateMachine:
         self.empty_timer = {'timer': Timer(1), 'status': False}
         self.lcd = lcd
         self.thread_run = False
-        _thread.start_new_thread(function=self.run_forever, args=())
+        _thread.start_new_thread(self.run_forever, ())
     
     def callback_error(self):
         self.buzzer.play_error_sound()
-        self.error_timer['timer'].init(mode=Timer.ONE_SHOT, freq=600000, callback=self.callback_error)
+        self.error_timer['timer'].init(mode=Timer.ONE_SHOT, period=600000, callback=self.callback_error)
         self.error_timer['status'] = True
 
     def callback_empty(self):
         self.buzzer.play_empty_sound()
-        self.empty_timer['timer'].init(mode=Timer.ONE_SHOT, freq=600000, callback=self.callback_empty)
+        self.empty_timer['timer'].init(mode=Timer.ONE_SHOT, period=600000, callback=self.callback_empty)
         self.empty_timer['status'] = True
     
     def start(self):
@@ -46,6 +46,7 @@ class StateMachine:
             sleep(1)
 
     def set_state(self):
+        self.buzzer.buzzer_off()
         if self.state == 'FULL':
             self.pump.off()
             self.lcd.fill(0)
@@ -75,7 +76,7 @@ class StateMachine:
             self.lcd.show()
             if not self.empty_timer['status']:
                 self.buzzer.play_empty_sound()
-                self.empty_timer['timer'].init(mode=Timer.ONE_SHOT, freq=600000, callback=self.callback_empty)
+                self.empty_timer['timer'].init(mode=Timer.ONE_SHOT, period=600000, callback=self.callback_empty)
                 self.empty_timer['status'] = True
             
             if self.fs1.is_opened() and self.fs2.is_opened():
@@ -93,5 +94,5 @@ class StateMachine:
                 self.lcd.text("ERROR", 10, 13)
                 self.lcd.show()
                 self.buzzer.play_empty_sound()
-                self.error_timer['timer'].init(mode=Timer.ONE_SHOT, freq=600000, callback=self.callback_error)
+                self.error_timer['timer'].init(mode=Timer.ONE_SHOT, period=600000, callback=self.callback_error)
                 self.error_timer['status'] = True
