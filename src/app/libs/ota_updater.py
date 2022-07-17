@@ -125,7 +125,7 @@ class OTAUpdater:
         cv = current_version.split('-')[0].split('.')
         lv = latest_version.split('-')[0].split('.')
         
-        return (cv[0]*10000+cv[1]*100+cv[2], lv[0]*10000+lv[1]*100+lv[2])
+        return (int(cv[0])*10000+int(cv[1])*100+int(cv[2]), int(lv[0])*10000+int(lv[1])*100+(lv[2]))
 
     def _create_new_version_file(self, latest_version):
         self.mkdir(self.modulepath(self.new_version_dir))
