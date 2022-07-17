@@ -121,7 +121,11 @@ class OTAUpdater:
         print("Checking version... ")
         print("\tCurrent version: ", current_version)
         print("\tLatest version: ", latest_version)
-        return (current_version, latest_version)
+        
+        cv = current_version.split('-')[0].split('.')
+        lv = latest_version.split('-')[0].split('.')
+        
+        return (cv[0]*10000+cv[1]*100+cv[2], lv[0]*10000+lv[1]*100+lv[2])
 
     def _create_new_version_file(self, latest_version):
         self.mkdir(self.modulepath(self.new_version_dir))
@@ -136,7 +140,7 @@ class OTAUpdater:
             with open(directory + "/" + version_file_name) as f:
                 version = f.read()
                 return version
-        return "0.0"
+        return "0.0.0"
 
     def get_latest_version(self):
         latest_release = self.http_client.get(
